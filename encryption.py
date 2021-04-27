@@ -85,3 +85,5 @@ def decryptFolder(folderName, f = None):
 
 		with open(filepath, 'wb') as decrypted_file:
 			decrypted_file.write(decrypted)
+	
+	return
