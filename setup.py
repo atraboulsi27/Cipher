@@ -2,6 +2,7 @@ import os
 import sys
 import winreg as reg
 import ctypes
+from auxFunctions import *
 
 
 def setup():
@@ -10,12 +11,6 @@ def setup():
 	os.mkdir("OtherKeys")
  
 	return
-
-def is_admin():
-		try:
-			return ctypes.windll.shell32.IsUserAnAdmin()
-		except:
-			return False
 
 def addToRegistry():
 
@@ -26,14 +21,18 @@ def addToRegistry():
 
 		python_exe = sys.executable
 
+		#add to file Context Menu
 		key_path = r"*\\shell\\Cipher"
-
 		key = reg.CreateKeyEx(reg.HKEY_CLASSES_ROOT, key_path)
-
 		reg.SetValue(key,'', reg.REG_SZ, '&Encrypt with Cipher')
-
 		key1 = reg.CreateKeyEx(key, r'command')
+		reg.SetValue(key1,'', reg.REG_SZ, python_exe + f' {cwd}\\print.py %1')
 
+		#add to folder Context Menu
+		key_path = r"Directory\\shell\\Cipher"
+		key = reg.CreateKeyEx(reg.HKEY_CLASSES_ROOT, key_path)
+		reg.SetValue(key,'', reg.REG_SZ, '&Encrypt with Cipher')
+		key1 = reg.CreateKeyEx(key, r'command')
 		reg.SetValue(key1,'', reg.REG_SZ, python_exe + f' {cwd}\\print.py %1')
 
 	else:
@@ -41,5 +40,3 @@ def addToRegistry():
 		ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
 
 	return
-
-addToRegistry()
