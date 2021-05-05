@@ -8,3 +8,4 @@ if __name__ == "__main__":
 	#decryptFolder("MyFolder")
 	#encryptFile("Afile.txt")
 	#decryptFile("Afile.txt")
+	print(1)

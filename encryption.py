@@ -5,6 +5,8 @@ from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
+a = 9
+
 def askPassword():
 	password = "my great password" #u need to get password from gui
 
