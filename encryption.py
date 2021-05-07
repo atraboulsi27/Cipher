@@ -5,8 +5,6 @@ from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
-a = 9
-
 def askPassword():
 	password = "my great password" #u need to get password from gui
 
@@ -17,6 +15,8 @@ def askPassword():
 		iterations=100000,
 	)
 	key = base64.urlsafe_b64encode(kdf.derive(password.encode()))
+
+	password = os.urandom(132)
 
 	return key
 
@@ -68,7 +68,7 @@ def decryptFile(fileName):
 def encryptFolder(folderName, f = None):
 
 	if is_admin():
-
+		
 		if f == None:
 			key = askPassword()
 			f = Fernet(key)
