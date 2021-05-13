@@ -7,9 +7,9 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from gui import pass_ , openPassWindow
 
 def askPassword():
-	openPassWindow()
-	password = pass_.get()
-	pass_.set("")
+	#openPassWindow()
+	password = "pppppppp"#pass_.get()
+	#pass_.set("")
 
 	kdf = PBKDF2HMAC(
 		algorithm=hashes.SHA256(),
