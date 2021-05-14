@@ -1,22 +1,23 @@
-#!!!!: Use ttk 
-#!!!!: Make Compatible for Files. Use Radios for options
-#!!!!: Make error window
-#!!!!: make pass confirmation 
 
 from tkinter import filedialog
+from tkinter import ttk
+from tkinter import messagebox
 from tkinter import *
 from encryption import *
 from auxFunctions import *
 
 #!!!!: Make error window
 def error(msg):
-    print(msg)
+    messagebox.showerror("Error", msg)
 
 def browse_button():
     # Allow user to select a directory and store it in global var
     # called folder_path
     global folder_path
-    filename = filedialog.askdirectory()
+    if(i.get()==1):
+        filename = filedialog.askdirectory()
+    else:
+        filename = filedialog.askopenfilename()
     folder_path.set(filename)
 
 #Encrypt or decrypt opens a new window to get password
@@ -54,7 +55,10 @@ def openPassWindow():
     #function when confirm password button is clicked, which destroys the password window
     def encryptionAction():#!!!!: make pass confirmation 
         if pass_.get() == conf_pass_box:
+            print(pass_)
             newWindow.destroy()
+        else:
+            error("Password mismatch")
         
 
     #function for displaying or hiding password
@@ -77,26 +81,25 @@ def openPassWindow():
     newWindow.resizable(width=False, height=False)
 
     #first label and textbox for password
-    label = Label(newWindow, text ="Enter Password").place(x=20,y=40)
-    pass_box = Entry(newWindow, width=35, textvariable = pass_)
+    label = ttk.Label(newWindow, text ="Enter Password").place(x=20,y=40)
+    pass_box = ttk.Entry(newWindow, width=35, textvariable = pass_)
     pass_box.place(x=130,y=40)
     pass_box.config(show="*")
 
     #second label and textbox for password confirmation
-    label = Label(newWindow, text ="Confirm Password").place(x=20,y=75)
-    conf_pass_box = Entry(newWindow, width=35)
+    label = ttk.Label(newWindow, text ="Confirm Password").place(x=20,y=75)
+    conf_pass_box = ttk.Entry(newWindow, width=35)
     conf_pass_box.place(x=130,y=75)
     conf_pass_box.config(show="*")
 
     #show_pass checkbutton shows password, conf_pass button confirms password entries and destroys the window
-    show_pass = Checkbutton(newWindow,text="Show Password", command=show).place(x=350,y=75)
-    conf_pass = Button(newWindow,text="Confirm", command=encryptionAction).place(x=180,y=110)
+    show_pass = ttk.Checkbutton(newWindow,text="Show Password", command=show).place(x=350,y=75)
+    conf_pass = ttk.Button(newWindow,text="Confirm", command=encryptionAction).place(x=180,y=110)
 
     return 
 
-
 if is_admin():
-    
+
     #Creating main window
     root = Tk()
     root.title("Security")
@@ -110,13 +113,21 @@ if is_admin():
     #!!!!: Make Compatible for Files. Use Radios for options
 
     #Textbox and button to insert filepath
-    folderBox = Entry(root, width = 75, textvariable = folder_path).place(x=300,y=70)
-    button_browse = Button(text="Browse", command=browse_button).place(x=800,y=68)
+    folderBox = ttk.Entry(root, width = 75, textvariable = folder_path).place(x=300,y=70)
+    button_browse = ttk.Button(text="Browse", command=browse_button).place(x=800,y=68)
+
+    #Radio buttons for folders and files
+
+    i = IntVar() 
+    i.set(1)
+    r1 = ttk.Radiobutton(root, text="Folders", value=1, variable=i).place(x=300,y=100)
+    r2 = ttk.Radiobutton(root, text="Files", value=2, variable=i).place(x=400,y=100)
+
 
     #Encryption and Decryption buttons
-    button_encrypt = Button(text="Encrypt", command=encryptFolder).place(x=370,y=120)
+    button_encrypt = ttk.Button(text="Encrypt", command=encryptFolder).place(x=370,y=135)
 
-    button_decrypt = Button(text="Decrypt", command=decryptFolder).place(x=650,y=120)
+    button_decrypt = ttk.Button(text="Decrypt", command=decryptFolder).place(x=650,y=135)
 
     mainloop()
 
