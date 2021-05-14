@@ -4,12 +4,11 @@ from auxFunctions import *
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from gui import pass_ , openPassWindow
+from gui import pswd, openPassWindow
 
 def askPassword():
-	#openPassWindow()
-	password = "pppppppp"#pass_.get()
-	#pass_.set("")
+	openPassWindow()
+	password = pswd
 
 	kdf = PBKDF2HMAC(
 		algorithm=hashes.SHA256(),
