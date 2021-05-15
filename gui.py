@@ -121,7 +121,7 @@ def openPassWindow():
             shown = False
     
     #creating a new window
-    root1 = Tk()
+    root1 = Toplevel()
     newWindow = root1
     newWindow.grab_set()
     newWindow.title("Password Entry") 
