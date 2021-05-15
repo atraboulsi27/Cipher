@@ -1,4 +1,3 @@
-
 from tkinter import filedialog
 from tkinter import ttk
 from tkinter import messagebox
@@ -25,17 +24,20 @@ def EncryptFolder():
     if folder_path.get() == "" :
         error("No folder selected !")
     else:
+        openPassWindow()
         encryptFolder(folder_path.get())
         folder_path.set("")
-    
+        pswd = ""
     return
 
 def DecryptFolder():
     if folder_path.get() == "" :
         error("No folder selected !")
     else:
+        openPassWindow()
         decryptFolder(folder_path.get())
         folder_path.set("")
+        pswd = ""
     return
 
 def EncryptFile():
@@ -43,8 +45,10 @@ def EncryptFile():
     if folder_path.get() == "" :
         error("No folder selected !")
     else:
+        openPassWindow()
         encryptFile(folder_path.get())
         folder_path.set("")
+        pswd = ""
 
     return
 
@@ -53,8 +57,10 @@ def DecryptFile():
     if folder_path.get() == "" :
         error("No folder selected !")
     else:
+        openPassWindow()
         decryptFile(folder_path.get())
         folder_path.set("")
+        pswd = ""
 
     return
 
@@ -81,15 +87,17 @@ pswd = ""
 #bool shown is used for password visibility 
 shown=False
 def openPassWindow(): 
-
+    global pswd
     pass_ = StringVar()
     pass_.set("")
 
     pass_conf = StringVar()
     pass_conf.set("")
 
+    
     #function when confirm password button is clicked, which destroys the password window
     def encryptionAction():#!!!!: make pass confirmation 
+        global pswd
         if pass_.get() == pass_conf.get():
             pswd = pass_.get()
             pass_.set("")
@@ -97,7 +105,7 @@ def openPassWindow():
         else:
             error("Password mismatch")
 
-        pswd = ""
+        
         
 
     #function for displaying or hiding password
@@ -174,4 +182,3 @@ if __name__ == "__main__":
     else:
         # Re-run the program with admin rights
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
-
