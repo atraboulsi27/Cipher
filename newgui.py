@@ -3,11 +3,61 @@ from tkinter import ttk
 from tkinter import messagebox
 from tkinter import *
 from asymmetric import *
+from encryption import *
+
+#Encrypt or decrypt opens a new window to get password
+def EncryptFolder():
+    if folder_path.get() == "" :
+        error("No folder selected !")
+    else:
+        encryptFolder(folder_path.get())
+        folder_path.set("")
+    return
+
+def DecryptFolder():
+    if folder_path.get() == "" :
+        error("No folder selected !")
+    else:
+        decryptFolder(folder_path.get())
+        folder_path.set("")
+    return
+
+def EncryptFile():
+
+    if folder_path.get() == "" :
+        error("No folder selected !")
+    else:
+        encryptFile(folder_path.get())
+        folder_path.set("")
+
+    return
+
+def DecryptFile():
+
+    if folder_path.get() == "" :
+        error("No folder selected !")
+    else:
+        decryptFile(folder_path.get())
+        folder_path.set("")
+
+    return
 
 def EncryptAction():
+
+    if i.get() == 1:
+        EncryptFolder()
+    else:
+        EncryptFile()
+
     return
 
 def DecryptAction():
+
+    if i.get() == 1:
+        DecryptFolder()
+    else:
+        DecryptFile()
+
     return
 
 def browse_button():
@@ -150,7 +200,7 @@ tabControl.add(tab3, text ='Public Key Encrpytion')
 tabControl.add(tab4, text ='Private Key Decrpytion')
 tabControl.pack(expand = 1, fill ="both")
 
-##Tab 1
+##Tab 1 !!!! Symetric Encryption
 folder_path = StringVar()
 folder_path.set("")
 
