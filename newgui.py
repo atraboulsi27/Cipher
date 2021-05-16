@@ -7,11 +7,20 @@ from encryption import *
 
 #Encrypt or decrypt opens a new window to get password
 def EncryptFolder():
-    if folder_path.get() == "" :
-        error("No folder selected !")
+    folder_path=folder_path_sym_encryption.get()
+    if folder_path == "" :
+        error("No folder selected!")
     else:
-        encryptFolder(folder_path.get())
-        folder_path.set("")
+        password = enc_pass_.get()
+        confirmation= enc_pass_conf.get()
+        if (password==confirmation and password!=""):
+            encryptFolder(folder_path,password)
+        else:
+            error("Password Error!")
+            return
+        enc_pass_.set("")
+        enc_pass_conf.set("")
+        folder_path_sym_encryption.set("")
     return
 
 def DecryptFolder():
@@ -23,28 +32,41 @@ def DecryptFolder():
     return
 
 def EncryptFile():
-
-    if folder_path.get() == "" :
-        error("No folder selected !")
+    folder_path=folder_path_sym_encryption.get()
+    if folder_path == "" :
+        error("No file selected!")
     else:
-        encryptFile(folder_path.get())
-        folder_path.set("")
-
+        password = enc_pass_.get()
+        confirmation= enc_pass_conf.get()
+        if (password==confirmation and password!=""):
+            encryptFile(folder_path,password)
+        else:
+            error("Password Error!")
+            return
+        enc_pass_.set("")
+        enc_pass_conf.set("")
+        folder_path_sym_encryption.set("")
     return
 
 def DecryptFile():
 
-    if folder_path.get() == "" :
-        error("No folder selected !")
+    folder_path=folder_path_sym_decryption.get()
+    if folder_path == "" :
+        error("No folder selected!")
     else:
-        decryptFile(folder_path.get())
-        folder_path.set("")
-
+        password = enc_pass_.get()
+        if (password!=""):
+            decryptFolder(folder_path,password)
+        else:
+            error("Password Error!")
+            return
+        dec_pass_.set("")
+        folder_path_sym_decryption.set("")
     return
 
 def EncryptAction():
 
-    if i.get() == 1:
+    if i_enc.get() == 1:
         EncryptFolder()
     else:
         EncryptFile()
@@ -53,22 +75,61 @@ def EncryptAction():
 
 def DecryptAction():
 
-    if i.get() == 1:
+    if i_dec.get() == 1:
         DecryptFolder()
     else:
         DecryptFile()
 
     return
 
-def browse_button():
+def browse_button_encryption():
     # Allow user to select a directory and store it in global var
     # called folder_path
-    global folder_path
-    if(i.get()==1):
+    if(i_enc.get()==1):
         filename = filedialog.askdirectory()
     else:
         filename = filedialog.askopenfilename()
-    folder_path.set(filename)
+    folder_path_sym_decryption.set(filename)
+
+def show_enc_fun():
+    if(show_enc.get() == False ):
+        enc_pass_box.config(show="")
+        enc_pass_box_conf.config(show="")
+        show_enc.set(True)
+    else:
+        enc_pass_box.config(show="*")
+        enc_pass_box_conf.config(show="*")
+        show_enc.set(False)
+def show_dec_fun():
+    if(show_dec.get() == False ):
+        dec_pass_box.config(show="")
+        show_dec.set(True)
+    else:
+        dec_pass_box.config(show="*")
+        show_dec.set(False)
+def show_gen_fun():
+    if(show_gen.get() == False ):
+        pair_pass_box.config(show="")
+        pair_conf_pass_box.config(show="")
+        show_gen.set(True)
+    else:
+        pair_pass_box.config(show="*")
+        pair_conf_pass_box.config(show="*")
+        show_gen.set(False)
+
+def show_priv_fun():
+    if(show_private.get() == False ):
+        private_key_password_box.config(show="")
+        show_private.set(True)
+    else:
+        private_key_password_box.config(show="*")
+        show_private.set(False)
+def browse_button_decryption():
+    if(i_dec.get()==1):
+        filename = filedialog.askdirectory()
+    else:
+        filename = filedialog.askopenfilename()
+    folder_path_sym_encryption.set(filename)
 def error(msg):
     messagebox.showerror("Error", msg)
 
@@ -190,31 +251,64 @@ root.geometry('1100x700')
 root.resizable(width=False, height=False)
 tabControl = ttk.Notebook(root)
 
+tab0 = ttk.Frame(tabControl)
 tab1 = ttk.Frame(tabControl)
 tab2 = ttk.Frame(tabControl)
 tab3 = ttk.Frame(tabControl)
 tab4 = ttk.Frame(tabControl)
-tabControl.add(tab1, text ='Symmetric Encryption')
+tabControl.add(tab0, text ='Symmetric Encryption')
+tabControl.add(tab1, text ='Symmetric Decryption')
 tabControl.add(tab2, text ='Create Public-Private Key Pair')
 tabControl.add(tab3, text ='Public Key Encrpytion')
 tabControl.add(tab4, text ='Private Key Decrpytion')
 tabControl.pack(expand = 1, fill ="both")
 
-##Tab 1 !!!! Symetric Encryption
-folder_path = StringVar()
-folder_path.set("")
+## Tab 0 
+folder_path_sym_encryption = StringVar()
+folder_path_sym_encryption.set("")
+enc_pass_= StringVar()
+enc_pass_.set("")
+enc_pass_conf= StringVar()
+enc_pass_conf.set("")
+i_enc = IntVar() 
+i_enc.set(1)
+show_enc = BooleanVar()
+show_enc.set(False)
+folderBox_encryption = ttk.Entry(tab0, width = 75, textvariable = folder_path_sym_encryption).place(x=200,y=40)
+button_browse_encryption = ttk.Button(tab0,text="Browse", command=browse_button_encryption).place(x=800,y=40)
+label_pass_enc = ttk.Label(tab0, text ="Enter Password").place(x=20,y=65)
+enc_pass_box = ttk.Entry(tab0, width=35, textvariable = enc_pass_)
+enc_pass_box.place(x=140,y=65)
+enc_pass_box.config(show="*")
+label_conf_enc= ttk.Label(tab0, text ="Confirm Password").place(x=20,y=90)
+enc_pass_box_conf = ttk.Entry(tab0, width=35, textvariable=enc_pass_conf)
+enc_pass_box_conf.place(x=140,y=90)
+enc_pass_box_conf.config(show="*")
+r1 = ttk.Radiobutton(tab0, text="Folder", value=1, variable=i_enc).place(x=300,y=100)
+r2 = ttk.Radiobutton(tab0, text="File", value=2, variable=i_enc).place(x=400,y=100)
+button_encrypt = ttk.Button(tab0,text="Encrypt", command=EncryptAction).place(x=370,y=135)
+show_pass_enc = ttk.Checkbutton(tab0,text="Show Password", command=show_enc_fun).place(x=350,y=65)
 
-#Textbox and button to insert filepath
-folderBox = ttk.Entry(tab1, width = 75, textvariable = folder_path).place(x=300,y=70)
-button_browse = ttk.Button(tab1,text="Browse", command=browse_button).place(x=800,y=68)
-#Radio buttons for folders and files
-i = IntVar() 
-i.set(1)
-r1 = ttk.Radiobutton(tab1, text="Folders", value=1, variable=i).place(x=300,y=100)
-r2 = ttk.Radiobutton(tab1, text="Files", value=2, variable=i).place(x=400,y=100)
-#Encryption and Decryption buttons
-button_encrypt = ttk.Button(tab1,text="Encrypt", command=EncryptAction).place(x=370,y=135)
-button_decrypt = ttk.Button(tab1,text="Decrypt", command=DecryptAction).place(x=650,y=135)
+
+##Tab 1 
+folder_path_sym_decryption = StringVar()
+folder_path_sym_decryption.set("")
+dec_pass_= StringVar()
+dec_pass_.set("")
+i_dec = IntVar() 
+i_dec.set(1)
+show_dec = BooleanVar()
+show_dec.set(False)
+folderBox_decryption = ttk.Entry(tab1, width = 75, textvariable = folder_path_sym_decryption).place(x=200,y=40)
+button_browse_decryption = ttk.Button(tab1,text="Browse", command=browse_button_decryption).place(x=800,y=40)
+label_pass_dec = ttk.Label(tab1, text ="Enter Password").place(x=20,y=65)
+dec_pass_box = ttk.Entry(tab1, width=35, textvariable = dec_pass_)
+dec_pass_box.place(x=140,y=65)
+dec_pass_box.config(show="*")
+r3 = ttk.Radiobutton(tab1, text="Folder", value=1, variable=i_dec).place(x=300,y=100)
+r4 = ttk.Radiobutton(tab1, text="File", value=2, variable=i_dec).place(x=400,y=100)
+button_decrypt = ttk.Button(tab1,text="Decrypt", command=DecryptAction).place(x=370,y=135)
+show_pass_dec = ttk.Checkbutton(tab1,text="Show Password", command=show_dec_fun).place(x=350,y=65)
 
 ####Tab 2
 pair_name = StringVar()
@@ -225,7 +319,8 @@ pair_pass_conf = StringVar()
 pair_pass_conf.set("")
 pair_generation_directory = StringVar()
 pair_generation_directory.set("")
-
+show_gen = BooleanVar()
+show_gen.set(False)
 label = ttk.Label(tab2, text ="Enter Pair Name").place(x=20,y=40)
 pair_name_box = ttk.Entry(tab2, width=35, textvariable = pair_name)
 pair_name_box.place(x=140,y=40)
@@ -243,7 +338,7 @@ label_pair_directory = ttk.Label(tab2, text ="Destination Directory").place(x=20
 public_key_directory = ttk.Entry(tab2, width = 75, textvariable = pair_generation_directory).place(x=140,y=115)
 select_public_key_directory = ttk.Button(tab2,text="Select Destination Directory", command=Browse_desitnation_pair_directory).place(x=600,y=112.5)
 button_decrypt = ttk.Button(tab2,text="Generate", command=GeneratePairAction).place(x=20,y=140)
-
+show_pass_gen = ttk.Checkbutton(tab2,text="Show Password", command=show_gen_fun).place(x=500,y=65)
 
 
 ####Tab 3
@@ -287,7 +382,8 @@ private_key_decrypted_file_name = StringVar()
 private_key_decrypted_file_name.set("")
 private_key_directory_path = StringVar()
 private_key_directory_path.set("")
-
+show_private = BooleanVar()
+show_private.set(False)
 abel_private_key_file = ttk.Label(tab4, text ="Private Key File").place(x=100,y=70)
 private_key_file = ttk.Entry(tab4, width = 75, textvariable = private_key_file_path).place(x=300,y=70)
 select_private_key_file = ttk.Button(tab4,text="Select Private Key File", command=Browse_private_key_file).place(x=800,y=68)
@@ -307,5 +403,5 @@ label_private_key_directory = ttk.Label(tab4, text ="Destination Directory").pla
 private_key_directory = ttk.Entry(tab4, width = 75, textvariable = private_key_directory_path).place(x=300,y=195)
 select_pivate_key_directory = ttk.Button(tab4,text="Select Destination Directory", command=Browse_directory_private_key).place(x=800,y=192.5)
 button_private_key_decrypt = ttk.Button(tab4,text="Decrypt", command=Private_key_decrypt).place(x=300,y=225)
-
+show_pass_private = ttk.Checkbutton(tab4,text="Show Password", command=show_priv_fun).place(x=800,y=95)
 root.mainloop()  
