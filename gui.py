@@ -59,9 +59,9 @@ def DecryptFile():
     if folder_path == "" :
         error("No folder selected!")
     else:
-        password = enc_pass_.get()
+        password = dec_pass_.get()
         if (password!=""):
-            decryptFolder(folder_path,password)
+            decryptFile(folder_path,password)
         else:
             error("Password Error!")
             return
@@ -295,7 +295,7 @@ enc_pass_box_conf = ttk.Entry(tab0, width=35, textvariable=enc_pass_conf)
 enc_pass_box_conf.place(x=140,y=90)
 enc_pass_box_conf.config(show="*")
 r1 = ttk.Radiobutton(tab0, text="Folder", value=1, variable=i_enc).place(x=150,y=125)
-r2 = ttk.Radiobutton(tab0, text="File", value=2, variable=i_enc).place(x=200,y=125)
+r2 = ttk.Radiobutton(tab0, text="File", value=2, variable=i_enc).place(x=250,y=125)
 button_encrypt = ttk.Button(tab0,text="Encrypt", command=EncryptAction).place(x=300,y=150)
 show_pass_enc = ttk.Checkbutton(tab0,text="Show Password", command=show_enc_fun).place(x=400,y=65)
 
@@ -316,7 +316,7 @@ dec_pass_box = ttk.Entry(tab1, width=35, textvariable = dec_pass_)
 dec_pass_box.place(x=140,y=65)
 dec_pass_box.config(show="*")
 r3 = ttk.Radiobutton(tab1, text="Folder", value=1, variable=i_dec).place(x=150,y=100)
-r4 = ttk.Radiobutton(tab1, text="File", value=2, variable=i_dec).place(x=200,y=100)
+r4 = ttk.Radiobutton(tab1, text="File", value=2, variable=i_dec).place(x=250,y=100)
 button_decrypt = ttk.Button(tab1,text="Decrypt", command=DecryptAction).place(x=200,y=135)
 show_pass_dec = ttk.Checkbutton(tab1,text="Show Password", command=show_dec_fun).place(x=400,y=65)
 
