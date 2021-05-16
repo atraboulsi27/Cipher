@@ -1,16 +1,28 @@
 import os
+import winshell
 import sys
 import winreg as reg
 import ctypes
-import base64
 from auxFunctions import *
+from win32com.client import Dispatch
 
+def makeShortCut():
 
-def setup():
+	cwd = os.getcwd()
 
-	os.mkdir("MyKeys")
-	os.mkdir("OtherKeys")
- 
+	desktop = winshell.desktop()
+	path = os.path.join(desktop, "Cipher.lnk")
+	target = os.path.join(cwd, "dist/gui.exe")
+	icon = os.path.join(cwd, "images.ico")
+	wDir = cwd
+
+	shell = Dispatch('WScript.Shell')
+	shortcut = shell.CreateShortCut(path)
+	shortcut.Targetpath = target
+	shortcut.WorkingDirectory = wDir
+	shortcut.IconLocation = icon
+	shortcut.save()
+
 	return
 
 def addToRegistry():
@@ -50,6 +62,10 @@ def addToRegistry():
 
 	else:
 		# Re-run the program with admin rights
-		ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
+		ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 0)
 
 	return
+
+if __name__ == "__main__":
+	addToRegistry()
+	makeShortCut()
